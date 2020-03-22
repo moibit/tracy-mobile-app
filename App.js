@@ -167,7 +167,7 @@ const QrStack = createStackNavigator(
 
 const AppStack = createDrawerNavigator(
   {
-    Account: AccountStack,
+    // Account: AccountStack,
     Home: { screen: HomeStack },
 
     Symptom: {
@@ -200,6 +200,7 @@ const AppStack = createDrawerNavigator(
 
 const AppNavigator = createSwitchNavigator(
   {
+    Account: AccountStack,
     App: AppStack,
     Auth: {
       //  screen: QRScreen,
@@ -207,8 +208,8 @@ const AppNavigator = createSwitchNavigator(
     },
   },
   {
-    //  initialRouteName: 'Auth',
-    initialRouteName: 'App',
+    initialRouteName: 'Auth',
+    //initialRouteName: 'App',
   },
 );
 export default createAppContainer(AppNavigator);

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-//import FileDetails from './fileDetails';
+import ScanQr from './scanqr';
+import ShareQr from './shareqr';
 
 const SecondRoute1 = () => (
     <View style={[styles.scene, { backgroundColor: 'lightgreen' }]} />
@@ -21,22 +22,22 @@ class Qr extends Component {
         this.state = {
             index: 0,
             routes: [
-                { key: 'first', title: 'File Details' },
-                { key: 'second', title: 'Versions' },
+                { key: 'first', title: 'Scan QR' },
+                { key: 'second', title: 'Share QR' },
             ]
         }
     }
     renderScene = SceneMap({
-        // first: () => <FileDetails {...this.props}/>,
-        first: SecondRoute1,
-        second: SecondRoute,
+        first: () => <ScanQr />,
+        // first: SecondRoute1,
+        second: () => <ShareQr />,
+        // second: SecondRoute,
     });
 
     handleIndexChange = index => {
         this.setState({ index });
     };
     render() {
-        // console.log(this.props)
         return (
             <View style={{ flex: 1, margin: 10, marginTop: 0 }}>
                 <TabView lazy={true}
@@ -50,7 +51,7 @@ class Qr extends Component {
                             {...props}
                             indicatorStyle={{ backgroundColor: 'white' }}
                             style={{ margin: 15, marginBottom: 0 }}
-                            tabStyle={{ backgroundColor: 'teal', minHeight: 30 }} // here
+                            // tabStyle={{ backgroundColor: 'teal', minHeight: 10 }} // here
                             renderLabel={({ route, focused, color }) => (
                                 <Text style={{ color: "#fff", margin: 8 }}>
                                     {route.title}
@@ -68,14 +69,6 @@ class Qr extends Component {
 
 }
 
-const styles = StyleSheet.create({
-    scene: {
-        flex: 1,
-        borderRadius: 10,
-        margin: 15,
-        elevation: 5
 
-    },
-});
 
 export default Qr;
