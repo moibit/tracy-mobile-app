@@ -6,25 +6,21 @@ class Symptoms extends Component {
     render() {
         return (
             <ScrollView
-                style={{ flex: 1 }}
+                style={styles.container}
             >
-                <View style={{ margin: 10 }}>
+                <View style={styles.viewContainer}>
                     <View>
-                        <Text style={styles.title}>My Health Report</Text>
+                        <Text style={styles.title}>Report symptoms</Text>
                     </View>
-                    <View style={{ marginTop: 20 }}>
+                    <View style={{ marginTop: 8 }}>
                         <Text style={styles.description}>
-                            Signs and symptoms of COVID-19 may appear 2 to 14 days after exposure
+                            Signs and symptoms of COVID-19 may appear 2 to 14 days after exposure.
                     </Text>
+                        <Text style={[styles.description, { fontWeight: "700" }]}>Pick the symptoms that apply to you:</Text>
                     </View>
-                    <View style={{ marginTop: 30 }}>
-                        <Text style={styles.description}>Please submit your symptoms</Text>
-                    </View>
-                    <SymptomForm />
-                    <View>
 
-                    </View>
                 </View>
+                <SymptomForm />
             </ScrollView>
         )
     }
@@ -32,13 +28,20 @@ class Symptoms extends Component {
 
 const styles = StyleSheet.create({
     title: {
-        textAlign: "center",
-        fontSize: 20,
-        fontWeight: "700"
+        fontSize: 30,
+        color: "#193F78",
+        letterSpacing: 0.5
     },
     description: {
-        textAlign: "center",
-        fontSize: 14
+        fontSize: 14,
+        color: "#193F78"
+    },
+    container: {
+        flex: 1,
+        backgroundColor: "#D6EBFE",
+    },
+    viewContainer: {
+        margin: 15
     }
 
 });

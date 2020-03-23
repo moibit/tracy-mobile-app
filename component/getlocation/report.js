@@ -1,28 +1,38 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Switch } from "react-native";
-import { Button } from 'react-native-elements';
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Button, Divider, Icon } from 'react-native-elements';
+
 
 
 class Report extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.textcontainer}>
-                    <Text numberOfLines={1} style={styles.Quarantine}>
-                        Quarantine
-                </Text>
-                    <Switch thumbColor="green" />
-                </View>
+
+                <Divider style={{ backgroundColor: 'rgba(25, 63, 120, 0.2)', height: 0.5 }} />
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("Symptoms")}>
+                    <View style={styles.textcontainer}>
+                        <Text style={styles.textStyle}>Report My Health</Text>
+                        <Icon
+                            name='md-arrow-forward'
+                            type='ionicon'
+                            color='#193F78'
+                            iconStyle={{ marginLeft: 12 }}
+                        />
+                    </View>
+                </TouchableOpacity>
+                <Divider style={{ backgroundColor: 'rgba(25, 63, 120, 0.2)', height: 0.5 }} />
 
                 <View style={styles.textcontainer}>
-                    <Button title="Report My Health" />
-
+                    <Text style={styles.textStyle}>Latest advisory</Text>
+                    <Icon
+                        name='md-arrow-forward'
+                        type='ionicon'
+                        color='#193F78'
+                        iconStyle={{ marginLeft: 12 }}
+                    />
                 </View>
-
-                <View style={styles.textcontainer}>
-                    <Button title="Latest Advisory" />
-
-                </View>
+                <Divider style={{ backgroundColor: 'rgba(25, 63, 120, 0.2)', height: 0.5 }} />
 
             </View>
         )
@@ -31,22 +41,20 @@ class Report extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 10
+        marginTop: 32
     },
     textcontainer: {
-        padding: 20,
         flexDirection: 'row',
-        justifyContent: "space-between",
         paddingBottom: 5,
-        marginLeft: 30,
-        marginRight: 30
+        marginTop: 16,
+        marginBottom: 14,
+
     },
-    Quarantine: {
-        flex: 1,
-        overflow: 'hidden',
-        fontSize: 20,
-        fontWeight: "700"
+    textStyle: {
+        color: "#193F78",
+        fontSize: 18
     }
+
 })
 
 export default Report;

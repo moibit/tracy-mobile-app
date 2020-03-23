@@ -1,11 +1,11 @@
 export default {
 
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: 10,
-        marginTop: '12%',
+        // flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // margin: 10,
+        marginTop: '10%',
 
     },
 
@@ -13,11 +13,11 @@ export default {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#000',
+        borderBottomWidth: 1,
+        borderBottomColor: '#fff',
         height: 40,
-        borderRadius: 5,
-        margin: 10,
+        // borderRadius: 5,
+        marginBottom: 40,
     },
 
     ImageStyle: {

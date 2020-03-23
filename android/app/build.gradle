@@ -149,6 +149,13 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+      storeFile file('tracy.keystore')
+      storePassword 'tracy@123'
+      keyAlias 'tracy'
+      keyPassword 'tracy@123'
+        }
+
     }
     buildTypes {
         debug {
@@ -160,6 +167,8 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+
         }
     }
     // applicationVariants are e.g. debug, release
