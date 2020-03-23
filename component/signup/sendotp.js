@@ -1,30 +1,58 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import styles from "../style";
-import { Icon } from 'react-native-elements';
-import Modal from "react-native-modal";
-import MsgPermission from './msgpermisson';
-const appColor = {
-    color: "#947ce8",
-}
+import { sendTracyOTP } from "../common/apicall";
+import axios from 'axios';
+import { InsertData } from '../common/db';
+
+
+
 class SignUp extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             otp: "",
-            otperr: false
+            otperr: false,
+            mobile: ""
         }
     }
 
-    handleSubmit = () => {
+    async componentDidMount() {
+        this.setState({ mobile: this.props.navigation.state.params.mobile });
+        let mobile = this.props.navigation.state.params.mobile;
+        await sendTracyOTP(mobile);
+    }
+
+
+    handleSubmit = async () => {
         if (this.state.otp == "") {
             this.setState({ otperr: true })
         }
         else {
-            this.props.navigation.navigate("Emergency")
-        }
+            let parameters = {
+                country_code: '91',
+                targetNumber: this.state.mobile,
+                oTp: this.state.otp
+            }
 
+            try {
+                let res = await axios({
+                    url: 'https://api.msg91.com/api/v5/otp/verify?mobile=' + parameters.country_code + '' + parameters.targetNumber + '&otp=' + parameters.oTp + '&authkey=300655AwBn6Fz74Ie5db184a4',
+                    method: 'POST',
+                });
+                if (res.data.message == "OTP verified success") {
+                    let db_res = await InsertData(this.state.mobile, 1);
+                    if (db_res[0]['rowsAffected'] == 1) {
+                        this.props.navigation.navigate("Emergency")
+                    }
+                }
+            }
+            catch (err) {
+                // console.log(err)
+            }
+
+        }
     }
 
     render() {

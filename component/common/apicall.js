@@ -1,3 +1,4 @@
+import axios from 'axios';
 export const sendTracyOTP = async (mob) => {
     let parameters = {
         country_code: '91',
@@ -9,7 +10,7 @@ export const sendTracyOTP = async (mob) => {
             method: 'POST',
         })
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 }
 
@@ -20,12 +21,15 @@ export const verifyTheOTP = async (mob, otp) => {
         oTp: otp
     }
     try {
-        const res = await axios({
+        let res = await axios({
             url: 'https://api.msg91.com/api/v5/otp/verify?mobile=' + parameters.country_code + '' + parameters.targetNumber + '&otp=' + parameters.oTp + '&authkey=300655AwBn6Fz74Ie5db184a4',
             method: 'POST',
         });
-        return res.data.message !== 'OTP not match';
+      
+        return res;
+        //  return res.data.message !== 'OTP not match';
+        // return res.data.message == "OTP verified success" ? "success" : "already";
     } catch (e) {
-        console.log(e);
+        // console.log(e);
     }
 }

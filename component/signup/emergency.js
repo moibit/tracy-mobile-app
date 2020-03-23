@@ -3,6 +3,7 @@ import { Text, View, TextInput, ScrollView, TouchableOpacity, StyleSheet } from 
 
 import { Icon } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
+import { sendTracyOTP } from "../common/apicall";
 
 const data = [{
     value: 'Spouse',
@@ -31,7 +32,7 @@ class SignUp extends Component {
         }
     }
 
-    sendOTP = () => {
+    sendOTP = async () => {
 
         if (this.state.name == "") {
             this.setState({ nameErr: true })
@@ -43,7 +44,9 @@ class SignUp extends Component {
         }
 
         else {
-            this.props.navigation.navigate("EmergencyOTP");
+
+            await sendTracyOTP(this.state.mobile);
+            this.props.navigation.navigate("EmergencyOTP", { mobile: this.state.mobile });
 
         }
     }

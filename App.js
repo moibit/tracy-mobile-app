@@ -10,6 +10,7 @@ import { createAppContainer, createSwitchNavigator, SafeAreaView } from 'react-n
 import { createStackNavigator } from 'react-navigation-stack';
 // import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
+import { dropTable } from "./component/common/db";
 
 
 
@@ -268,6 +269,11 @@ const AppStack = createDrawerNavigator(
             iconRight
             buttonStyle={{ width: 100, borderColor: "#fcfcfc", borderWidth: 1 }}
             titleStyle={{ color: "#fcfcfc", marginRight: 8, fontSize: 12 }}
+
+            onPress={async () => {
+              await dropTable()
+              props.navigation.navigate('Login')
+            }}
           />
         </View>
       </SafeAreaView>

@@ -41,6 +41,7 @@ class UserLocation extends Component {
             }
         )
         if (granted) {
+            this.setState({isVisible :false})
             // setInterval(() => {
             Geolocation.getCurrentPosition(
                 position => {

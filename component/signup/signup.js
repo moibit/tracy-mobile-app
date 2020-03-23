@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import styles from "../style";
 import { Icon } from 'react-native-elements';
 import Modal from "react-native-modal";
 import MsgPermission from './msgpermisson';
+
+
 
 class SignUp extends Component {
 
@@ -19,11 +21,14 @@ class SignUp extends Component {
             emailErr: false
         }
     }
+    
 
     allowPermission = () => {
 
         this.setState({ msgPermission: false });
-        this.props.navigation.navigate("SignUpOtp")
+
+
+        this.props.navigation.navigate("SignUpOtp", { mobile: this.state.mobile })
 
     }
     checkMsgPermission = () => {

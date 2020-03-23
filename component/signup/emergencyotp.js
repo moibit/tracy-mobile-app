@@ -1,28 +1,47 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import styles from "../style";
-import { Icon } from 'react-native-elements';
-import Modal from "react-native-modal";
-import MsgPermission from './msgpermisson';
-const appColor = {
-    color: "#947ce8",
-}
+import axios from 'axios';
+
 class SignUp extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             otp: "",
-            otpErr: false
+            otpErr: false, mobile: ""
         }
     }
+    componentDidMount() {
+        this.setState({ mobile: this.props.navigation.state.params.mobile });
+    }
 
-    handleSubmit = () => {
+    handleSubmit =async () => {
         if (this.state.otp == "") {
             this.setState({ otpErr: true })
         }
         else {
-            this.props.navigation.navigate("Home")
+            //  this.props.navigation.navigate("Home")
+            let parameters = {
+                country_code: '91',
+                targetNumber: this.state.mobile,
+                oTp: this.state.otp
+            }
+
+            try {
+                let res = await axios({
+                    url: 'https://api.msg91.com/api/v5/otp/verify?mobile=' + parameters.country_code + '' + parameters.targetNumber + '&otp=' + parameters.oTp + '&authkey=300655AwBn6Fz74Ie5db184a4',
+                    method: 'POST',
+                });
+                if (res.data.message == "OTP verified success") {
+
+                    this.props.navigation.navigate("Home")
+
+                }
+            }
+            catch (err) {
+                // console.log(err)
+            }
         }
 
     }

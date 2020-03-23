@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import styles from "../style";
 import { Icon } from 'react-native-elements';
+import { CreateDB, GetDBData } from '../common/db';
+import { sendTracyOTP } from "../common/apicall";
 
 
-const appColor = {
-    color: "#947ce8",
-}
+
 class Login extends Component {
 
     constructor(props) {
@@ -18,16 +18,22 @@ class Login extends Component {
 
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
+        await CreateDB();
+        let db_res = await GetDBData(); console.log(db_res)
+        if (db_res.status == 1) {
+            this.props.navigation.navigate("Home");
+        }
 
     }
-    sendLoginOtp = () => {
+    sendLoginOtp = async () => {
 
         if (this.state.mobile == "") {
             this.setState({ err: true });
         }
         else {
-            this.props.navigation.navigate("LoginOtp");
+            await sendTracyOTP(this.state.mobile);
+            this.props.navigation.navigate("LoginOtp", { mobile: this.state.mobile });
 
         }
 
