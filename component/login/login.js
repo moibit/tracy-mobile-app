@@ -13,11 +13,24 @@ class Login extends Component {
         super(props);
         this.state = {
             mobile: "",
+            isLoggedIn: false,
+            err: false
 
         }
     }
+    componentDidMount() {
+
+    }
     sendLoginOtp = () => {
-        this.props.navigation.navigate("LoginOtp");
+
+        if (this.state.mobile == "") {
+            this.setState({ err: true });
+        }
+        else {
+            this.props.navigation.navigate("LoginOtp");
+
+        }
+
     }
 
 
@@ -42,9 +55,10 @@ class Login extends Component {
                                 <TextInput
                                     keyboardType={'numeric'}
                                     style={{ flex: 1, color: "#fff" }}
-                                    placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                                    placeholderTextColor={this.state.err ? "brown" : "rgba(255, 255, 255, 0.5)"}
                                     placeholder="Mobile number"
                                     underlineColorAndroid="transparent"
+                                    onChangeText={(e) => this.setState({ mobile: e, err: false })}
 
                                 />
                                 {/* <Icon name="mobile" size={30} style={styles.ImageStyle} /> */}

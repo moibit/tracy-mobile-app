@@ -8,17 +8,23 @@ class LoginOtp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            otp: ""
+            otp: "",
+            err: false
         }
     }
 
     handleSubmit = () => {
-        this.props.navigation.navigate("Home")
+        if (this.state.otp == "") {
+            this.setState({ err: true })
+        }
+        else {
+            this.props.navigation.navigate("Home")
+        }
+
     }
 
     render() {
         return (
-            // <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-200}>
             <ScrollView style={{ backgroundColor: "#193F78" }}>
 
                 <View style={{ flex: 1, margin: 20 }}>
@@ -38,7 +44,7 @@ class LoginOtp extends Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderBottomWidth: 1,
-                                borderBottomColor: '#fff',
+                                borderBottomColor: this.state.err ? "brown" : '#fff',
                                 // height: 40,
                                 // borderRadius: 5,
                                 marginBottom: 40,
@@ -50,6 +56,7 @@ class LoginOtp extends Component {
                                     placeholderTextColor="rgba(255, 255, 255, 0.5)"
                                     // placeholder="Mobile number"
                                     underlineColorAndroid="transparent"
+                                    onChangeText={e => this.setState({ otp: e, err: false })}
 
                                 />
                                 {/* <Icon name="mobile" size={30} style={styles.ImageStyle} /> */}
@@ -79,7 +86,6 @@ class LoginOtp extends Component {
                     </View>
                 </View>
             </ScrollView>
-            // </KeyboardAvoidingView>
         );
     }
 }

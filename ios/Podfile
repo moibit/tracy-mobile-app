@@ -44,6 +44,8 @@ target 'tracy' do
 
   pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
 
+  pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
+
   target 'tracyTests' do
     inherit! :search_paths
     # Pods for testing

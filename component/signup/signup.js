@@ -4,38 +4,46 @@ import styles from "../style";
 import { Icon } from 'react-native-elements';
 import Modal from "react-native-modal";
 import MsgPermission from './msgpermisson';
-const appColor = {
-    color: "#947ce8",
-}
+
 class SignUp extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            emailFocus: false,
-            passwordFocus: false,
-            secureText: true,
-            toScroll: false,
             mobile: "",
-            otp: "",
-            msgPermission: false
+            name: "",
+            email: "",
+            msgPermission: false,
+            mobErr: false,
+            nameErr: false,
+            emailErr: false
         }
     }
 
     allowPermission = () => {
-        //() => this.props.navigation.navigate("Home")
-        // this.props.navigation.navigate("Home");
+
         this.setState({ msgPermission: false });
         this.props.navigation.navigate("SignUpOtp")
 
     }
     checkMsgPermission = () => {
-        this.setState({ msgPermission: true })
+        if (this.state.mobile == "") {
+            this.setState({ mobErr: true })
+        } else if (this.state.name == "") {
+            this.setState({ nameErr: true })
+        }
+        else if (this.state.email == "") {
+            this.setState({ emailErr: true })
+        }
+        else {
+            this.setState({ msgPermission: true, emailErr: false, mobErr: false, nameErr: false })
+        }
+
+
     }
 
     render() {
         return (
-            // <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-200}>
             <ScrollView style={{ backgroundColor: "#193F78" }}>
                 <View>
                     <Modal isVisible={this.state.msgPermission}>
@@ -55,39 +63,40 @@ class SignUp extends Component {
 
                         <View style={styles.container}>
 
-                            <View style={[styles.SectionStyle, { borderColor: this.state.emailFocus ? appColor.color : '#000' }]}>
+                            <View style={styles.SectionStyle}>
 
                                 <TextInput
                                     keyboardType={'numeric'}
                                     style={{ flex: 1, color: "#fff" }}
-                                    placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                                    placeholderTextColor={this.state.mobErr ? "brown" : "rgba(255, 255, 255, 0.5)"}
                                     placeholder="Mobile number"
                                     underlineColorAndroid="transparent"
+                                    onChangeText={(e) => this.setState({ mobile: e, mobErr: false })}
 
                                 />
-                                {/* <Icon name="mobile" size={30} style={styles.ImageStyle} /> */}
+
                             </View>
-                            <View style={[styles.SectionStyle, { borderColor: this.state.passwordFocus ? appColor.color : '#000' }]}>
+                            <View style={styles.SectionStyle}>
                                 <TextInput
                                     style={{ flex: 1, color: "#fff" }}
-                                    placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                                    placeholderTextColor={this.state.nameErr ? "brown" : "rgba(255, 255, 255, 0.5)"}
                                     placeholder="Name"
-                                    secureTextEntry={this.state.secureText}
                                     underlineColorAndroid="transparent"
+                                    onChangeText={(e) => this.setState({ name: e, nameErr: false })}
 
                                 />
-                                {/* <Icon name="eye" size={20} style={[styles.ImageStyle, { color: !this.state.secureText ? appColor.color : '#000' }]} onPress={() => this.setState({ secureText: !this.state.secureText })} /> */}
+
                             </View>
 
-                            <View style={[styles.SectionStyle, { borderColor: this.state.passwordFocus ? appColor.color : '#000' }]}>
+                            <View style={styles.SectionStyle}>
                                 <TextInput
                                     style={{ flex: 1, color: "#fff" }}
-                                    placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                                    placeholderTextColor={this.state.emailErr ? "brown" : "rgba(255, 255, 255, 0.5)"}
                                     placeholder="Email"
-                                    secureTextEntry={this.state.secureText}
                                     underlineColorAndroid="transparent"
+                                    onChangeText={(e) => this.setState({ email: e, emailErr: false })}
                                 />
-                                {/* <Icon name="eye" size={20} style={[styles.ImageStyle, { color: !this.state.secureText ? appColor.color : '#000' }]} onPress={() => this.setState({ secureText: !this.state.secureText })} /> */}
+
                             </View>
 
 
@@ -117,13 +126,11 @@ class SignUp extends Component {
                                 />
                             </TouchableOpacity>
                         </View>
-                        {/* <Text style={{ textAlign: 'center', color: appColor.color, fontSize: 16 }}>Forgot Password?</Text> */}
                     </View>
                 </View>
                 <Text style={{ textAlign: 'center', color: "#fff", fontSize: 16 }}>Already Have an Account?<Text style={{ color: "#fff", textDecorationLine: "underline" }} onPress={() => this.props.navigation.navigate("Login")}> Login</Text></Text>
 
             </ScrollView>
-            // </KeyboardAvoidingView>
         );
     }
 }

@@ -22,13 +22,30 @@ class SignUp extends Component {
         super(props);
         this.state = {
 
-            otp: "",
-            mobile: ""
+            mobile: "",
+            name: "",
+            relative: "",
+            mobErr: false,
+            nameErr: false,
+            relativeErr: false
         }
     }
 
     sendOTP = () => {
-        this.props.navigation.navigate("EmergencyOTP");
+
+        if (this.state.name == "") {
+            this.setState({ nameErr: true })
+        } else if (this.state.relative == "") {
+            this.setState({ relativeErr: true })
+        }
+        else if (this.state.mobile == "") {
+            this.setState({ mobErr: true })
+        }
+
+        else {
+            this.props.navigation.navigate("EmergencyOTP");
+
+        }
     }
 
     render() {
@@ -54,34 +71,40 @@ class SignUp extends Component {
                                 <TextInput
 
                                     style={{ flex: 1, color: "#fff" }}
-                                    placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                                    placeholderTextColor={this.state.nameErr ? "brown" : "rgba(255, 255, 255, 0.5)"}
                                     placeholder="Name"
                                     underlineColorAndroid="transparent"
-
+                                    onChangeText={(e) => this.setState({ name: e, nameErr: false })}
                                 />
-                                {/* <Icon name="mobile" size={30} style={styles.ImageStyle} /> */}
+
                             </View>
                             <View style={{ marginBottom: 20, }}>
                                 <Dropdown
                                     label='How are you related?'
                                     data={data}
                                     style={{ flex: 1 }}
-                                    baseColor="rgba(255, 255, 255, 0.5)"
-                                    labelTextStyle={{ color: "rgba(255, 255, 255, 0.5)" }}
+                                    baseColor={this.state.relativeErr ? "brown" : "rgba(255, 255, 255, 0.5)"}
+                                    // labelTextStyle={{ color: "red" }}
+                                    // textColor="#fff"
+                                    // itemColor="rgba(255, 255, 255, 0.5)"
+                                    onChangeText={(e) => this.setState({ relative: e, relativeErr: false })}
+
+
                                 />
-                                {/* <Icon name="eye" size={20} style={[styles.ImageStyle, { color: !this.state.secureText ? appColor.color : '#000' }]} onPress={() => this.setState({ secureText: !this.state.secureText })} /> */}
+
                             </View>
 
                             <View style={[styles.SectionStyle, { borderColor: this.state.passwordFocus ? appColor.color : '#000' }]}>
                                 <TextInput
                                     keyboardType={'numeric'}
                                     style={{ flex: 1, color: "#fff" }}
-                                    placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                                    placeholderTextColor={this.state.mobErr ? "brown" : "rgba(255, 255, 255, 0.5)"}
                                     placeholder="Mobile"
                                     secureTextEntry={this.state.secureText}
                                     underlineColorAndroid="transparent"
+                                    onChangeText={(e) => this.setState({ mobile: e, mobErr: false })}
                                 />
-                                {/* <Icon name="eye" size={20} style={[styles.ImageStyle, { color: !this.state.secureText ? appColor.color : '#000' }]} onPress={() => this.setState({ secureText: !this.state.secureText })} /> */}
+
                             </View>
 
 

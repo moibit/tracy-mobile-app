@@ -12,23 +12,27 @@ class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            otp: ""
+            otp: "",
+            otpErr: false
         }
     }
 
     handleSubmit = () => {
-        this.props.navigation.navigate("Home")
+        if (this.state.otp == "") {
+            this.setState({ otpErr: true })
+        }
+        else {
+            this.props.navigation.navigate("Home")
+        }
+
     }
 
     render() {
         return (
-            // <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-200}>
+
             <ScrollView style={{ backgroundColor: "#193F78" }}>
 
                 <View style={{ flex: 1, margin: 20 }}>
-
-
-                    {/* <Logo /> */}
 
                     <View style={{ marginTop: '8%' }}>
                         <Text style={{ fontSize: 30, color: "#fff" }}>Almost done!</Text>
@@ -42,7 +46,7 @@ class SignUp extends Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderBottomWidth: 1,
-                                borderBottomColor: '#fff',
+                                borderBottomColor: this.state.otpErr ? "brown" : '#fff',
                                 // height: 40,
                                 // borderRadius: 5,
                                 marginBottom: 30,
@@ -54,6 +58,7 @@ class SignUp extends Component {
                                     placeholderTextColor="rgba(255, 255, 255, 0.5)"
                                     // placeholder="Mobile number"
                                     underlineColorAndroid="transparent"
+                                    onChangeText={(e) => this.setState({ otp: e, otpErr: false })}
 
                                 />
                                 {/* <Icon name="mobile" size={30} style={styles.ImageStyle} /> */}
@@ -82,11 +87,10 @@ class SignUp extends Component {
 
                             </TouchableOpacity>
                         </View>
-                        {/* <Text style={{ textAlign: 'center', color: appColor.color, fontSize: 16 }}>Forgot Password?</Text> */}
                     </View>
                 </View>
             </ScrollView>
-            // </KeyboardAvoidingView>
+
         );
     }
 }

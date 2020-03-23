@@ -12,12 +12,19 @@ class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            otp: ""
+            otp: "",
+            otperr: false
         }
     }
 
     handleSubmit = () => {
-        this.props.navigation.navigate("Emergency")
+        if (this.state.otp == "") {
+            this.setState({ otperr: true })
+        }
+        else {
+            this.props.navigation.navigate("Emergency")
+        }
+
     }
 
     render() {
@@ -42,7 +49,7 @@ class SignUp extends Component {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderBottomWidth: 1,
-                                borderBottomColor: '#fff',
+                                borderBottomColor: this.state.otperr ? "brown" : '#fff',
                                 // height: 40,
                                 // borderRadius: 5,
                                 marginBottom: 40,
@@ -51,9 +58,10 @@ class SignUp extends Component {
                                 <TextInput
                                     keyboardType={'numeric'}
                                     style={{ flex: 1, color: "#fff", textAlign: "center", letterSpacing: 30, fontSize: 36 }}
-                                    placeholderTextColor="rgba(255, 255, 255, 0.5)"
+                                    placeholderTextColor={"rgba(255, 255, 255, 0.5)"}
                                     // placeholder="Mobile number"
                                     underlineColorAndroid="transparent"
+                                    onChangeText={(e) => this.setState({ otp: e, otperr: false })}
 
                                 />
                                 {/* <Icon name="mobile" size={30} style={styles.ImageStyle} /> */}
