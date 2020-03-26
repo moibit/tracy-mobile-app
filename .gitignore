@@ -12,3 +12,5 @@ build/
 #IDEA
 .idea
 .gradle
+
+moi-id/test.js

@@ -10,12 +10,10 @@ export const CreateDB =
     async () => {
         try {
             let dbVal = await SQLite.openDatabase({ name: database_name });
-            let createAll = await CreateTables(dbVal);
-            return dbVal;
-
+            await CreateTables(dbVal);
         }
         catch (err) {
-            // console.log(err);
+            throw new Error(err);
         }
 
     }
@@ -26,11 +24,10 @@ export const CreateTables = async (DB) => {
             "mobile TEXT," +
             "status TEXT" +
             ");");
-        //  console.log(result)
         return result;
     }
     catch (err) {
-        console.log(err);
+        throw new Error(err);
     }
 }
 
@@ -40,26 +37,23 @@ export const InsertData = async (mobile, status) => {
         let x = await DB_Open.executeSql(
             'INSERT INTO User (mobile, status) VALUES (?,?)',
             [mobile, status])
-        // let x = await DB_Open.executeSql("SELECT * FROM User;");
-        // console.log("vl", x);
         return x;
     }
 
     catch (Err) {
-
+        throw new Error(Err);
     }
 }
 
-export const GetDBData = async (mobile, status) => {
+export const GetDBData = async () => {
     try {
         const DB_Open = await SQLite.openDatabase({ name: database_name });
         let x = await DB_Open.executeSql("SELECT * FROM User");
-        console.log(x[0].rows.item(0));
         return x[0].rows.item(0);
     }
 
     catch (Err) {
-        console.log(Err)
+        throw new Error(Err);
     }
 }
 
@@ -71,6 +65,6 @@ export const dropTable = async () => {
         await DB_Open.executeSql('DROP TABLE IF EXISTS User', []);
     }
     catch (err) {
-
+        throw new Error(err);
     }
 }

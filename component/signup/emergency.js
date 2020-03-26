@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, StyleSheet,Image } from 'react-native';
 
 import { Icon } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
-import { sendTracyOTP } from "../common/apicall";
+// import { sendTracyOTP } from "../common/apicall";
 
 const data = [{
     value: 'Spouse',
@@ -57,12 +57,14 @@ class SignUp extends Component {
             <ScrollView style={{ backgroundColor: "#193F78" }}>
 
 
-                <View style={{ flex: 1, margin: 20 }}>
+                <View style={{ flex: 1, margin: 20, marginTop: 0 }}>
 
-
+                    <View>
+                        <Image source={require("../../assets/logo_green.png")} resizeMode="contain" style={{ width: 70, alignSelf: "flex-end", marginTop: -30 }} />
+                    </View>
                     {/* <Logo /> */}
 
-                    <View style={{ marginTop: '8%' }}>
+                    <View style={{ marginTop: -30 }}>
                         <Text style={{ fontSize: 30, color: "#fff" }}>Who’s your</Text>
                         <Text style={{ fontSize: 30, color: "#fff" }}>emergency contact?</Text>
                         <Text style={{ fontSize: 14, color: "#fff", marginTop: 16 }}>We’ll send them an OTP which you’ll need to assign them as your emergency contact.</Text>

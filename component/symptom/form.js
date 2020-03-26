@@ -4,6 +4,7 @@ import { Button, Card, CheckBox, Slider, Icon, Divider, Tooltip } from 'react-na
 import Modal from 'react-native-modal';
 import FormOTP from './formotp';
 import SuccessMsg from './success';
+import { setTimeout } from 'timers';
 
 
 
@@ -67,7 +68,11 @@ class SymptomForm extends Component {
         this.setState({ symptoms: list })
     }
     submitClose = () => {
-        this.setState({ isVisible: false,isVisible1:true });
+        this.setState({ isVisible: false, isVisible1: true });
+        setTimeout(() => {
+            this.setState({ isVisible1: false })
+        }, 3000);
+
     }
 
     submitClose1 = () => {
