@@ -11,7 +11,7 @@ export default class Camera extends Component {
           ref={myRef}
           captureAudio={false}
           style={styles.preview}
-          type={RNCamera.Constants.Type.back}
+          type={RNCamera.Constants.Type.front}
           flashMode={RNCamera.Constants.FlashMode.on}
           androidCameraPermissionOptions={{
             title: 'Permission to use camera',
