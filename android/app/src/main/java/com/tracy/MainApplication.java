@@ -6,7 +6,7 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import org.pgsqlite.SQLitePluginPackage;
 // import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
-// import org.reactnative.camera.RNCameraPackage;
+import org.reactnative.camera.RNCameraPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -31,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          // packages.add(new RNCameraPackage());
           return packages;
         }
 

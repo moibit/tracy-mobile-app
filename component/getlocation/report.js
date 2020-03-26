@@ -1,18 +1,34 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Linking } from "react-native";
 import { Button, Divider, Icon } from 'react-native-elements';
 
 
 
 class Report extends Component {
+
+    
     render() {
+        const {reportLocation} = this.props
         return (
             <View style={styles.container}>
 
-                <Divider style={{ backgroundColor: 'rgba(25, 63, 120, 0.2)', height: 0.5 }} />
-                <TouchableOpacity onPress={() => this.props.navigation.navigate("Symptoms")}>
+            <Divider style={{ backgroundColor: 'rgba(25, 63, 120, 0.2)', height: 0.5 }} />
+                <TouchableOpacity onPress={() => reportLocation()} >
                     <View style={styles.textcontainer}>
-                        <Text style={styles.textStyle}>Report My Health</Text>
+                        <Text style={styles.textStyle}>Report My Location</Text>
+                        <Icon
+                            name='md-arrow-forward'
+                            type='ionicon'
+                            color='#193F78'
+                            iconStyle={{ marginLeft: 12 }}
+                        />
+                    </View>
+                </TouchableOpacity>
+
+                <Divider style={{ backgroundColor: 'rgba(25, 63, 120, 0.2)', height: 0.5 }} />
+                <TouchableOpacity onPress={() => this.props.navigation.navigate("Symptoms")} disabled>
+                    <View style={styles.textcontainer}>
+                        <Text style={{ ...styles.textStyle, color:'grey',}}>Report My Health</Text>
                         <Icon
                             name='md-arrow-forward'
                             type='ionicon'
@@ -22,8 +38,9 @@ class Report extends Component {
                     </View>
                 </TouchableOpacity>
                 <Divider style={{ backgroundColor: 'rgba(25, 63, 120, 0.2)', height: 0.5 }} />
-
+                <TouchableOpacity onPress={()=> Linking.openURL("https://t.me/karnataka_Covid19")}>
                 <View style={styles.textcontainer}>
+                
                     <Text style={styles.textStyle}>Latest advisory</Text>
                     <Icon
                         name='md-arrow-forward'
@@ -32,6 +49,8 @@ class Report extends Component {
                         iconStyle={{ marginLeft: 12 }}
                     />
                 </View>
+                </TouchableOpacity>
+
                 <Divider style={{ backgroundColor: 'rgba(25, 63, 120, 0.2)', height: 0.5 }} />
 
             </View>
