@@ -6,7 +6,9 @@ var { width, height } = Dimensions.get('window');
 import Report from "./report";
 import Msg from './msg';
 import Modal from 'react-native-modal';
-
+import Camera from '../common/Camera'
+import SuccessMsg from '../symptom/success';
+import AlertMsg from '../symptom/alert';
 const flightPlanCoordinates = [
     { lat: 37.772, lng: -122.214 },
     { lat: 21.291, lng: -157.821 },
@@ -25,8 +27,13 @@ class UserLocation extends Component {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             },
-            isVisible: true
+            isVisible: true,
+            turnOnCamera:false,
+            successModal:false,
+            alertModal:false
         }
+
+        this.camera = ''
     }
     componentDidMount() {
         this.findCoordinates();
@@ -49,7 +56,18 @@ class UserLocation extends Component {
                     const location = position;
                     var x = { latitude: location.coords.latitude, longitude: location.coords.longitude };
                     //{ latitude: 37.8025259, longitude: -122.4351431 },
-                    this.setState({ location: [...this.state.location, x] });
+                    this.setState({ 
+                        location: [...this.state.location, x],  
+                        region: {
+                            latitude: x.latitude,
+                            longitude: x.longitude,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        },
+                    
+                    },
+                        
+                         );
                 },
                 error => Alert.alert(error.message),
                 { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
@@ -64,14 +82,65 @@ class UserLocation extends Component {
     allowMsg = () => {
         this.setState({ isVisible: false })
     }
+
+    reportLocation = async () =>{
+      await this.findCoordinates()
+      console.log(this.state.location)
+      this.setState({
+        alertModal: true
+      })
+    }
+
+    takePicture = async() => {
+        // console.log(this.camera)
+        if (this.camera) {
+          const options = { quality: 0.5, base64: true };
+          this.camera.resumePreview();
+          const data = await this.camera.takePictureAsync(options);
+          this.setState({
+            turnOnCamera : false,
+            image: 'data:image/png;base64,'+data.base64,
+            successModal: true
+          },()=>{
+              setTimeout(()=>{
+                  this.setState({
+                      successModal:false,
+                  })
+              },3000)
+          })
+          
+        }
+    }
+
+    onAlertAccept = ()=>{
+        this.setState({
+            alertModal:false,
+            turnOnCamera: true
+        })
+    }
+
+
     render() {
+        const {turnOnCamera, successModal, isVisible, alertModal} = this.state
         return (
             <ScrollView style={{ backgroundColor: "#D6EBFE" }}>
-
+            {turnOnCamera ? <Camera myRef={ref=>this.camera=ref} takePicture={this.takePicture}/>
+            :
+            <View>
                 <View>
-                    <Modal isVisible={this.state.isVisible}>
+                    <Modal isVisible={isVisible}>
                         <Msg allowMsg={this.allowMsg} />
                         {/* <SuccessMsg /> */}
+                    </Modal>
+                </View>
+                <View>
+                    <Modal isVisible={successModal}>
+                       <SuccessMsg body="Your Location and Photo captured Successfully"/>
+                    </Modal>
+                </View>
+                <View>
+                    <Modal isVisible={alertModal}>
+                       <AlertMsg onAccept={this.onAlertAccept} body="Your Location and Photo will be captured"/>
                     </Modal>
                 </View>
                 <View style={styles.container}>
@@ -89,7 +158,7 @@ class UserLocation extends Component {
                             showsUserLocation={true}
                             showsMyLocationButton={true}
                             zoomEnabled={true}
-                        // region={this.state.region}
+                            region={this.state.region}
                         >
                             <Polyline
                                 coordinates={this.state.location}
@@ -113,9 +182,10 @@ class UserLocation extends Component {
 
                         </View>
                     </View>
-                    <Report {...this.props} />
+                    <Report {...this.props} reportLocation={this.reportLocation} />
                 </View>
-
+                </View>
+            }
             </ScrollView>
         )
     }

@@ -4,6 +4,14 @@ import { Button, Card, CheckBox, Slider, Icon, Divider, Tooltip } from 'react-na
 import Modal from 'react-native-modal';
 import FormOTP from './formotp';
 import SuccessMsg from './success';
+import Fever from '../../assets/symptoms/fever.png'
+import Cough from '../../assets/symptoms/cough.png'
+import DifficultyBreathing from '../../assets/symptoms/difficultybreathing.png'
+import ShortnessOfBreathing from '../../assets/symptoms/shortnessofbreath.png'
+import Aches from '../../assets/symptoms/aches.png'
+import RunnyNose from '../../assets/symptoms/runnynose.png'
+import SoreThroat from '../../assets/symptoms/sorethroat.png'
+import Tired from '../../assets/symptoms/tired.png'
 import { setTimeout } from 'timers';
 
 
@@ -17,42 +25,42 @@ class SymptomForm extends Component {
                 {
                     status: false,
                     name: "Fever",
-                    img: "https://i.ya-webdesign.com/images/fever-clipart-body-temperature-13.png",
+                    img: Fever,
                 },
                 {
                     status: false,
                     name: "Cough",
-                    img: "https://i.ya-webdesign.com/images/fever-clipart-body-temperature-13.png",
+                    img: Cough,
                 },
                 {
                     status: false,
                     name: "Shortness of breath",
-                    img: "https://i.ya-webdesign.com/images/fever-clipart-body-temperature-13.png",
+                    img: ShortnessOfBreathing,
                 },
                 {
                     status: false,
                     name: "Difficulty breathing",
-                    img: "https://i.ya-webdesign.com/images/fever-clipart-body-temperature-13.png",
+                    img: DifficultyBreathing,
                 },
                 {
                     status: false,
                     name: "Tiredness",
-                    img: "https://i.ya-webdesign.com/images/fever-clipart-body-temperature-13.png",
+                    img: Tired,
                 },
                 {
                     status: false,
                     name: "Aches",
-                    img: "https://i.ya-webdesign.com/images/fever-clipart-body-temperature-13.png",
+                    img: Aches,
                 },
                 {
                     status: false,
                     name: "Runny nose",
-                    img: "https://i.ya-webdesign.com/images/fever-clipart-body-temperature-13.png",
+                    img: RunnyNose,
                 },
                 {
                     status: false,
                     name: "Sore Throat",
-                    img: "https://i.ya-webdesign.com/images/fever-clipart-body-temperature-13.png",
+                    img: SoreThroat,
                 },
             ],
             sliderMin: 97,
@@ -89,7 +97,7 @@ class SymptomForm extends Component {
                 </View>
                 <View>
                     <Modal isVisible={this.state.isVisible1}>
-                        <SuccessMsg submitClose={this.submitClose} />
+                        <SuccessMsg submitClose={this.submitClose} body="YOur Symptoms has been Successfully added"/>
                     </Modal>
                 </View>
                 <FlatList
@@ -113,7 +121,7 @@ class SymptomForm extends Component {
                                         <Text style={{ color: "#193F78", fontSize: 24, marginTop: 10, marginLeft: 10 }}>{item.name}</Text>
                                     </View>
                                     <View style={{ flex: 1 }}>
-                                        <Image source={{ uri: item.img }} resizeMode="contain" style={{ width: 100, flex: 1 }} />
+                                        <Image source={item.img} resizeMode="contain" style={{ width: 90, height:70 }} />
                                     </View>
                                 </View>
 
