@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, ScrollView, TouchableOpacity,Image , ActivityIndicator} from 'react-native';
 import styles from "../style";
 import { InsertData, CreateDB } from '../common/db';
-import {verifyTheOTP} from '../../moi-id/integrationUtils.js';
-const Moi_ID = require('../../moi-id');
-const moi_id = new Moi_ID();
+
+/* Commented code shall be only during integration with moi_id and moibit so please don't remove any piece of code that was commented */
+// import {verifyTheOTP} from '../../moi-id/integrationUtils.js';
+// const Moi_ID = require('../../moi-id');
+// const moi_id = new Moi_ID();
 
 
 
@@ -30,42 +32,41 @@ class LoginOtp extends Component {
             this.setState({ err: true })
         }
         else {
-            try {
-                this.setState({loggingIn : true});
-                if (verifyTheOTP(this.props.navigation.state.params.otpToBeVerifiedWith,this.state.otp)) {
-                    try {
-                        const loginR = await moi_id.unlock(this.state.mobile,this.state.mobile);
-                        if (loginR) {
-                            let db_res = await InsertData(this.state.mobile, 1);
-                            if (db_res[0]['rowsAffected'] == 1) {
-                                this.setState({loggingIn : false});
+            // try {
+                // this.setState({loggingIn : true});
+                // if (verifyTheOTP(this.props.navigation.state.params.otpToBeVerifiedWith,this.state.otp)) {
+                //     try {
+                //         const loginR = await moi_id.unlock(this.state.mobile,this.state.mobile);
+                //         if (loginR) {
+                //             let db_res = await InsertData(this.state.mobile, 1);
+                //             if (db_res[0]['rowsAffected'] == 1) {
+                //                 this.setState({loggingIn : false});
                                 this.props.navigation.navigate("Home")
-                            }
-                        }else {
-                            this.setState({notAnUser : true,loggingIn:false});
-                            setTimeout(() => {
-                                this.setState({ notAnUser: false })
-                            }, 3000)
-                        }
-                    }catch(e) {
-                        console.log(e);
-                        this.setState({loggingIn : false,unableToLogin : true});
-                        setTimeout(() => {
-                            this.setState({ unableToLogin: false })
-                        }, 3000)
-                    }
-                }else {
-                    this.setState({loggingIn : false,invalidOtp : true});
-                    setTimeout(() => {
-                        this.setState({ invalidOtp: false })
-                    }, 3000)
-                }
-            }
-            catch (err) {
-                console.log(err)
-            }
+                            // }
+            //             }else {
+            //                 this.setState({notAnUser : true,loggingIn:false});
+            //                 setTimeout(() => {
+            //                     this.setState({ notAnUser: false })
+            //                 }, 3000)
+            //             }
+            //         }catch(e) {
+            //             console.log(e);
+            //             this.setState({loggingIn : false,unableToLogin : true});
+            //             setTimeout(() => {
+            //                 this.setState({ unableToLogin: false })
+            //             }, 3000)
+            //         }
+            //     }else {
+            //         this.setState({loggingIn : false,invalidOtp : true});
+            //         setTimeout(() => {
+            //             this.setState({ invalidOtp: false })
+            //         }, 3000)
+            //     }
+            // }
+            // catch (err) {
+            //     console.log(err)
+            // }
         }
-
     }
 
     render() {

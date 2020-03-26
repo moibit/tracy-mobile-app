@@ -3,11 +3,11 @@ import { Text, View, TextInput, ScrollView, TouchableOpacity, Image } from 'reac
 import styles from "../style";
 import { Icon } from 'react-native-elements';
 import { CreateDB, GetDBData } from '../common/db';
-import {sendTracyOTP} from '../../moi-id/integrationUtils.js';
+// import {sendTracyOTP} from '../../moi-id/integrationUtils.js';
 import SplashScreen from './splashScreen';
 
-const Moi_ID = require('../../moi-id');
-const moi_id = new Moi_ID();
+// const Moi_ID = require('../../moi-id');
+// const moi_id = new Moi_ID();
 
 class Login extends Component {
 
@@ -32,22 +32,22 @@ class Login extends Component {
                 this.setState({checkingForSession : false});
             }else {
                 if (db_res.status == 1) {
-                    try {
-                        const loginR = await moi_id.unlock(db_res.mobile, db_res.mobile);
-                        if (loginR) {
+                    // try {
+                        // const loginR = await moi_id.unlock(db_res.mobile, db_res.mobile);
+                        // if (loginR) {
                             this.props.navigation.navigate("Home");
-                        }else {
-                            this.setState({notAnUser : true,checkingForSession:false});
-                            setTimeout(() => {
-                                this.setState({ notAnUser: false })
-                            }, 3000)
-                        }
-                    }catch(e) {
-                        this.setState({checkingForSession : false,unableToLogin : true});
-                        setTimeout(() => {
-                            this.setState({ unableToLogin: false })
-                        }, 3000)
-                    }
+                        // }else {
+                        //     this.setState({notAnUser : true,checkingForSession:false});
+                        //     setTimeout(() => {
+                        //         this.setState({ notAnUser: false })
+                        //     }, 3000)
+                        // }
+                    // }catch(e) {
+                    //     this.setState({checkingForSession : false,unableToLogin : true});
+                    //     setTimeout(() => {
+                    //         this.setState({ unableToLogin: false })
+                    //     }, 3000)
+                    // }
                 }else {
                     this.setState({checkingForSession : false});
                 }

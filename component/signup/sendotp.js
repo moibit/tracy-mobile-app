@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import styles from "../style";
 import { InsertData } from '../common/db';
-/* Below piece of code shall be only used during integration */
-import {sendTracyOTP,verifyTheOTP,sendSecretSause} from '../../moi-id/integrationUtils.js'
-const Moi_ID = require('../../moi-id');
-const moi_id = new Moi_ID();
+/* Commented code shall be only during integration with moi_id and moibit so please don't remove any piece of code that was commented */
+// import {sendTracyOTP,verifyTheOTP,sendSecretSause} from '../../moi-id/integrationUtils.js'
+// const Moi_ID = require('../../moi-id');
+// const moi_id = new Moi_ID();
 
 
 
@@ -27,8 +27,7 @@ class SignUp extends Component {
     async componentDidMount() {
         this.setState({ mobile: this.props.navigation.state.params.mobile });
         let mobile = this.props.navigation.state.params.mobile;
-        /* Below piece of code shall be only used during integration */
-        this.setState({otpToBeVerifiedWith : await sendTracyOTP(mobile)});
+        // this.setState({otpToBeVerifiedWith : await sendTracyOTP(mobile)});
     }
 
 
@@ -37,36 +36,35 @@ class SignUp extends Component {
             this.setState({ otperr: true })
         }
         else {
-            this.setState({ loading: true });
-            try {
-                /* Below piece of code shall be only used during integration */
-                if (verifyTheOTP(this.state.otpToBeVerifiedWith,this.state.otp)) {
-                    const signupR = await moi_id.create(this.state.mobile, this.state.mobile);
-                    if (signupR) {
-                        await sendSecretSause(moi_id.getSeedSause(),this.state.mobile);
-                        let db_res = await InsertData(this.state.mobile, 1);
-                        if (db_res[0]['rowsAffected'] == 1) {
-                            // this.setState({ loading: false });
+            // this.setState({ loading: true });
+            // try {
+            //     /* Below piece of code shall be only used during integration */
+            //     if (verifyTheOTP(this.state.otpToBeVerifiedWith,this.state.otp)) {
+            //         const signupR = await moi_id.create(this.state.mobile, this.state.mobile);
+            //         if (signupR) {
+            //             await sendSecretSause(moi_id.getSeedSause(),this.state.mobile);
+            //             let db_res = await InsertData(this.state.mobile, 1);
+            //             if (db_res[0]['rowsAffected'] == 1) {
                             this.props.navigation.navigate("Emergency")
-                        }
-                    } else {
-                        // console.log('Already an user')
-                        this.setState({ exists: true, loading: false });
-                        setTimeout(() => {
-                            this.setState({ exists: false })
-                        }, 3000)
-                    }
-                }else {
-                    this.setState({loading : false,invalidOtp : true});
-                    setTimeout(() => {
-                        this.setState({ invalidOtp: false })
-                    }, 3000)
-                }
-            }
-            catch (err) {
-                this.setState({ loading: false, somethingWrong:err.toString() });
+            //             }
+            //         } else {
+            //             // console.log('Already an user')
+            //             this.setState({ exists: true, loading: false });
+            //             setTimeout(() => {
+            //                 this.setState({ exists: false })
+            //             }, 3000)
+            //         }
+            //     }else {
+            //         this.setState({loading : false,invalidOtp : true});
+            //         setTimeout(() => {
+            //             this.setState({ invalidOtp: false })
+            //         }, 3000)
+            //     }
+            // }
+            // catch (err) {
+            //     this.setState({ loading: false, somethingWrong:err.toString() });
 
-            }
+            // }
 
         }
     }
