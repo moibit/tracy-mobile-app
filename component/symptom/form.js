@@ -12,6 +12,9 @@ import Aches from '../../assets/symptoms/aches.png'
 import RunnyNose from '../../assets/symptoms/runnynose.png'
 import SoreThroat from '../../assets/symptoms/sorethroat.png'
 import Tired from '../../assets/symptoms/tired.png'
+import { setTimeout } from 'timers';
+
+
 
 
 class SymptomForm extends Component {
@@ -73,7 +76,11 @@ class SymptomForm extends Component {
         this.setState({ symptoms: list })
     }
     submitClose = () => {
-        this.setState({ isVisible: false,isVisible1:true });
+        this.setState({ isVisible: false, isVisible1: true });
+        setTimeout(() => {
+            this.setState({ isVisible1: false })
+        }, 3000);
+
     }
 
     submitClose1 = () => {

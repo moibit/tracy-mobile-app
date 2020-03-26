@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, Image } from 'react-native';
 import styles from "../style";
 import axios from 'axios';
 
@@ -9,14 +9,15 @@ class SignUp extends Component {
         super(props);
         this.state = {
             otp: "",
-            otpErr: false, mobile: ""
+            otpErr: false, mobile: "",
+            errMsg: false
         }
     }
     componentDidMount() {
         this.setState({ mobile: this.props.navigation.state.params.mobile });
     }
 
-    handleSubmit =async () => {
+    handleSubmit = async () => {
         if (this.state.otp == "") {
             this.setState({ otpErr: true })
         }
@@ -38,6 +39,9 @@ class SignUp extends Component {
                     this.props.navigation.navigate("Home")
 
                 }
+                else {
+
+                }
             }
             catch (err) {
                 // console.log(err)
@@ -51,9 +55,12 @@ class SignUp extends Component {
 
             <ScrollView style={{ backgroundColor: "#193F78" }}>
 
-                <View style={{ flex: 1, margin: 20 }}>
+                <View style={{ flex: 1, margin: 20, marginTop: 0 }}>
+                    <View>
+                        <Image source={require("../../assets/logo_green.png")} resizeMode="contain" style={{ width: 70, alignSelf: "flex-end", marginTop: -30 }} />
+                    </View>
 
-                    <View style={{ marginTop: '8%' }}>
+                    <View style={{ marginTop: -30 }}>
                         <Text style={{ fontSize: 30, color: "#fff" }}>Almost done!</Text>
                         <Text style={{ fontSize: 16, color: "#fff", marginTop: 8 }}>Enter the OTP sent to your emergency contact to add them here.</Text>
 
@@ -107,6 +114,7 @@ class SignUp extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
+
                 </View>
             </ScrollView>
 

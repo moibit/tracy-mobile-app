@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity,Image , ActivityIndicator} from 'react-native';
 import styles from "../style";
 import { InsertData, CreateDB } from '../common/db';
-import axios from 'axios';
+import {verifyTheOTP} from '../../moi-id/integrationUtils.js';
+const Moi_ID = require('../../moi-id');
+const moi_id = new Moi_ID();
 
 
 
@@ -13,7 +15,8 @@ class LoginOtp extends Component {
         this.state = {
             otp: "",
             err: false,
-            mobile: ""
+            mobile: "",
+            loggingIn : false
         }
     }
 
@@ -27,27 +30,39 @@ class LoginOtp extends Component {
             this.setState({ err: true })
         }
         else {
-            //this.props.navigation.navigate("Home")
-            let parameters = {
-                country_code: '91',
-                targetNumber: this.state.mobile,
-                oTp: this.state.otp
-            }
-
             try {
-                let res = await axios({
-                    url: 'https://api.msg91.com/api/v5/otp/verify?mobile=' + parameters.country_code + '' + parameters.targetNumber + '&otp=' + parameters.oTp + '&authkey=300655AwBn6Fz74Ie5db184a4',
-                    method: 'POST',
-                });
-                if (res.data.message == "OTP verified success") {
-                    let db_res = await InsertData(this.state.mobile, 1);
-                    if (db_res[0]['rowsAffected'] == 1) {
-                        this.props.navigation.navigate("Home")
+                this.setState({loggingIn : true});
+                if (verifyTheOTP(this.props.navigation.state.params.otpToBeVerifiedWith,this.state.otp)) {
+                    try {
+                        const loginR = await moi_id.unlock(this.state.mobile,this.state.mobile);
+                        if (loginR) {
+                            let db_res = await InsertData(this.state.mobile, 1);
+                            if (db_res[0]['rowsAffected'] == 1) {
+                                this.setState({loggingIn : false});
+                                this.props.navigation.navigate("Home")
+                            }
+                        }else {
+                            this.setState({notAnUser : true,loggingIn:false});
+                            setTimeout(() => {
+                                this.setState({ notAnUser: false })
+                            }, 3000)
+                        }
+                    }catch(e) {
+                        console.log(e);
+                        this.setState({loggingIn : false,unableToLogin : true});
+                        setTimeout(() => {
+                            this.setState({ unableToLogin: false })
+                        }, 3000)
                     }
+                }else {
+                    this.setState({loggingIn : false,invalidOtp : true});
+                    setTimeout(() => {
+                        this.setState({ invalidOtp: false })
+                    }, 3000)
                 }
             }
             catch (err) {
-                // console.log(err)
+                console.log(err)
             }
         }
 
@@ -57,12 +72,14 @@ class LoginOtp extends Component {
         return (
             <ScrollView style={{ backgroundColor: "#193F78" }}>
 
-                <View style={{ flex: 1, margin: 20 }}>
+                <View style={{ flex: 1, margin:20,marginTop:0 }}>
 
 
-                    {/* <Logo /> */}
+                    <View>
+                        <Image source={require("../../assets/logo_green.png")} resizeMode="contain" style={{ width: 70, alignSelf: "flex-end", marginTop: -30 }} />
+                    </View>
 
-                    <View style={{ marginTop: '8%' }}>
+                    <View style={{ marginTop: 0 }}>
                         <Text style={{ fontSize: 30, color: "#fff" }}>Finish login</Text>
                         <Text style={{ fontSize: 16, color: "#fff", marginTop: 8 }}>Enter the OTP sent to your phone to login</Text>
 
@@ -93,6 +110,11 @@ class LoginOtp extends Component {
                             </View>
 
                         </View>
+                        <View>
+                            <Text style={{color:'pink',fontSize:14}}>{this.state.invalidOtp ? 'Authentication Failed! Make sure you have entered correct OTP' : ''}</Text>
+                            <Text style={{color:'pink',fontSize:14}}>{this.state.notAnUser ? 'Authentication Failed! Please register to tracy' : ''}</Text>
+                            <Text style={{color:'pink',fontSize:14}}>{this.state.unableToLogin ? 'Unable to login.Please try after sometime':''}</Text>
+                        </View>
                         <Text style={{ textAlign: 'center', color: "#fff", fontSize: 16, textDecorationLine: "underline" }}>Resend OTP</Text>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity style={{
@@ -104,11 +126,13 @@ class LoginOtp extends Component {
                                 margin: 20,
                                 borderRadius: 5
                             }} onPress={this.handleSubmit}>
-                                <Text style={{
+                                {this.state.loggingIn ? <ActivityIndicator size="large" color="#193F78" /> : null}
+                                {!this.state.loggingIn ? <Text style={{
                                     fontSize: 16,
                                     color: '#193F78',
                                     fontWeight: "bold"
-                                }}>LOG IN</Text>
+                                }}>LOG IN</Text> : null}
+                                
 
                             </TouchableOpacity>
                         </View>

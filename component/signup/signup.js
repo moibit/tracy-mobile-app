@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableOpacity, Image } from 'react-native';
 import styles from "../style";
 import { Icon } from 'react-native-elements';
 import Modal from "react-native-modal";
@@ -21,7 +21,7 @@ class SignUp extends Component {
             emailErr: false
         }
     }
-    
+
 
     allowPermission = () => {
 
@@ -57,16 +57,18 @@ class SignUp extends Component {
                     </Modal>
                 </View>
 
-                <View style={{ flex: 1, margin: 20 }}>
+                <View style={{ flex: 1, margin: 20, marginTop: 0 }}>
+
+                    <View>
+                        <Image source={require("../../assets/logo_green.png")} resizeMode="contain" style={{ width: 70, alignSelf: "flex-end", marginTop: -30 }} />
+                    </View>
 
 
-                    {/* <Logo /> */}
-
-                    <View style={{ marginTop: '8%' }}>
+                    <View style={{ marginTop: -30 }} >
                         <Text style={{ fontSize: 30, color: "#fff" }}>Hi,</Text>
                         <Text style={{ fontSize: 18, color: "#fff" }}>Sign up to Tracy</Text>
 
-                        <View style={styles.container}>
+                        <View style={[styles.container, { marginTop: "5%" }]}>
 
                             <View style={styles.SectionStyle}>
 

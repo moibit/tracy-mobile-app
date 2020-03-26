@@ -146,7 +146,7 @@ class UserLocation extends Component {
                 <View style={styles.container}>
 
                     <View>
-                        <Text style={styles.username}>Hi Mahesh</Text>
+                        <Text style={styles.username}>Your Digital Companion</Text>
                     </View>
                     <View style={{
                         height: 260,
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
 
     },
     username: {
-        fontSize: 30,
+        fontSize: 24,
         marginBottom: 16
     },
     Quarantine: {
