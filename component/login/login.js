@@ -5,10 +5,11 @@ import { Icon } from 'react-native-elements';
 import { CreateDB, GetDBData } from '../common/db';
 // import {sendTracyOTP} from '../../moi-id/integrationUtils.js';
 import SplashScreen from './splashScreen';
-
+import { AsyncStorage } from 'react-native';
+import firebase from 'react-native-firebase';
 // const Moi_ID = require('../../moi-id');
 // const moi_id = new Moi_ID();
-
+import RemotePushController from '../services/pushNotification';
 class Login extends Component {
 
     constructor(props) {
@@ -22,8 +23,101 @@ class Login extends Component {
             processingWithoutFail : true
         }
     }
+    
+      
+        //1
+      async checkPermission() {
+        const enabled = await firebase.messaging().hasPermission();
+        if (enabled) {
+            this.getToken();
+        } else {
+            console.log('requesting permission');
+            this.requestPermission();
+        }
+      }
+      
+        //3
+      async getToken() {
+        let fcmToken = await AsyncStorage.getItem('fcmToken');
+        if (!fcmToken) {
+            fcmToken = await firebase.messaging().getToken();
+            if (fcmToken) {
+                // user has a device token
+                console.log(fcmToken);
+                await AsyncStorage.setItem('fcmToken', fcmToken);
+            }else{
+                console.log("Unable to get token");
+            }
+        }
+      }
+      
+        //2
+      async requestPermission() {
+        try {
+            await firebase.messaging().requestPermission();
+            // User has authorised
+            this.getToken();
+        } catch (error) {
+            //   User has rejected permissions
+            console.log('permission rejected');
+        }
+      }
 
+
+
+      async createNotificationListeners() {
+        /*
+        * Triggered when a particular notification has been received in foreground
+        * */
+        this.notificationListener = firebase.notifications().onNotification((notification) => {
+            const { title, body } = notification;
+            this.showAlert(title, body);
+        });
+      
+        /*
+        * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+        * */
+        this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+            const { title, body } = notificationOpen.notification;
+            this.showAlert(title, body);
+        });
+      
+        /*
+        * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+        * */
+        const notificationOpen = await firebase.notifications().getInitialNotification();
+        if (notificationOpen) {
+            const { title, body } = notificationOpen.notification;
+            this.showAlert(title, body);
+        }
+        /*
+        * Triggered for data only payload in foreground
+        * */
+        this.messageListener = firebase.messaging().onMessage((message) => {
+          //process data message
+          console.log(JSON.stringify(message));
+        });
+      }
+      
+      showAlert(title, body) {
+        Alert.alert(
+          title, body,
+          [
+              { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ],
+          { cancelable: false },
+        );
+      }
+
+      componentWillUnmount() {
+        // this.notificationListener();
+       //  this.notificationOpenedListener();
+      }
     async componentDidMount() {
+        this.checkPermission();
+      
+        this.createNotificationListeners(); //add this line
+
         try {
             await CreateDB();
             let db_res;
@@ -69,9 +163,10 @@ class Login extends Component {
 
     render() {
         return (
-            this.state.checkingForSession ? 
+           <View>
+            {this.state.checkingForSession ? 
             <SplashScreen processingWithoutFail={this.state.processingWithoutFail} /> : 
-            <ScrollView style={{ backgroundColor: "#193F78" }}>
+            <ScrollView style={{ backgroundColor: "#193F78",height:'100%' }}>
 
                 <View style={{ flex: 1, margin: 20, marginTop: 0 }}>
                     <View>
@@ -131,6 +226,9 @@ class Login extends Component {
                 <Text style={{ textAlign: 'center', color: "#fff", fontSize: 16 }}>New to Tracy?<Text style={{ color: "#fff", textDecorationLine: "underline" }} onPress={() => this.props.navigation.navigate("Signup")}> Join us now</Text></Text>
 
             </ScrollView>
+            }
+              <RemotePushController style={{height:0}}/>
+            </View> 
             // </KeyboardAvoidingView>
         );
     }
