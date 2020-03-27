@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "android-resource": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "release:beta:android": "npm install && npm run buildx && npm run android-resource && cd android && fastlane install_plugins && fastlane beta && cd .."
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.7",
