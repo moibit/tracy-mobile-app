@@ -5,9 +5,22 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 import json
+import datetime 
 
+config={}
+
+with open('push-notification-configs.json') as configurations:
+    if(configurations):
+        config=json.load(configurations)
 
 duplicateChecker={}
+
+with open('lastNotifiicationSent.txt') as outfile:
+    if(outfile):
+        duplicateChecker=json.load(outfile)
+if(len(duplicateChecker.keys())==0):
+    duplicateChecker={}
+print(duplicateChecker)
 # TODO : move configs to remote config
 def sendNotification(token):
     url = "https://fcm.googleapis.com/fcm/send"
@@ -19,16 +32,19 @@ def sendNotification(token):
         'Cache-Control': "no-cache",
         'Postman-Token': "5555a695-e23e-4b10-ac82-9494f42f2c2f"
         }
-
-    response = requests.request("POST", url, data=payload, headers=headers)
-
+    try:
+        response = requests.request("POST", url, data=payload, headers=headers)
+    except:
+        print("unable to send")
     print(response.text)
-
+    return True
     # if(response.statsCode == 200):
     #     # update the lastNotificationSent = DateTime.now() 
     #     # update user profile with above time on moi-bit
     #     print("UPdated")
 
+def shouldNotificationBeSent():
+    file1 = open("lastNotifiicationSent.json","w") 
 
 
 cred = credentials.Certificate('tracy-mobile-app-firebase-adminsdk-zoirc-9eaa9c874a.json')
@@ -49,12 +65,31 @@ for tokens in users["notifications"]["documents"]:
             token=users["notifications"]["documents"][tokens][uuid]["token"]
             #print(token)
             if(token not in duplicateChecker.keys()):
+                print("Token not already there")
                 sendNotification(token)
-                duplicateChecker[token]=1
+                duplicateChecker[token]=datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                print(duplicateChecker)
             else:
                 print("Notification to this user was already sent")
+                lastSentTime= datetime.datetime.strptime(duplicateChecker[token],"%m/%d/%Y, %H:%M:%S")
+                print(lastSentTime)
+                diff = (datetime.datetime.now()-lastSentTime).total_seconds()
+                print(diff)
+                if(diff> config["secondsBeforeLastNotification"]):
+                    print("Resending")
+                    duplicateChecker[token]=datetime.datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                    sendNotification(token)
+                else:
+                    print("Time for this token is less than 3 hrs")
         except:
             print("no idea what went wrong")
+
+
+print(duplicateChecker)
+
+with open('lastNotifiicationSent.txt', 'w') as outfile:
+    json.dump(duplicateChecker, outfile)
+
 # connect to moi_bit db
 # get list of users
 #  
