@@ -1,0 +1,40 @@
+{
+    "project_info": {
+        "project_number": "186863251968",
+        "firebase_url": "https://tracy-mobile-app-6c764.firebaseio.com",
+        "project_id": "tracy-mobile-app-6c764",
+        "storage_bucket": "tracy-mobile-app-6c764.appspot.com"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:186863251968:android:44f6d76ee1c3871dc8dee5",
+                "android_client_info": {
+                    "package_name": "com.tracy"
+                }
+            },
+            "oauth_client": [
+                {
+                    "client_id": "186863251968-q1c1nt9cp9921im0rqhc811edl41uvtq.apps.googleusercontent.com",
+                    "client_type": 3
+                }
+            ],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyAS4gCcWUTRX9VamNNwV1hQMJQWLqcf_yA"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": [
+                        {
+                            "client_id": "186863251968-q1c1nt9cp9921im0rqhc811edl41uvtq.apps.googleusercontent.com",
+                            "client_type": 3
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}
