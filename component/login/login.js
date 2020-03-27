@@ -164,11 +164,9 @@ class Login extends Component {
     render() {
         return (
            <View>
-              
-           
             {this.state.checkingForSession ? 
             <SplashScreen processingWithoutFail={this.state.processingWithoutFail} /> : 
-            <ScrollView style={{ backgroundColor: "#193F78" }}>
+            <ScrollView style={{ backgroundColor: "#193F78",height:'100%' }}>
 
                 <View style={{ flex: 1, margin: 20, marginTop: 0 }}>
                     <View>
@@ -229,7 +227,7 @@ class Login extends Component {
 
             </ScrollView>
             }
-              <RemotePushController/>
+              <RemotePushController style={{height:0}}/>
             </View> 
             // </KeyboardAvoidingView>
         );
