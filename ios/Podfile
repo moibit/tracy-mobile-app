@@ -42,13 +42,26 @@ target 'tracy' do
 
   # pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
-  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+  # pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
 
   pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
+  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
+
+  pod 'RNCPushNotificationIOS', :path => '../node_modules/@react-native-community/push-notification-ios'
+
+  # add the Firebase pod for Google Analytics
+  pod 'Firebase/Analytics'
+pod 'Firebase/Core'
+pod 'Firebase/Messaging'
+pod 'Firebase/Database'
+
+  # add pods for any other desired Firebase products
+  # https://firebase.google.com/docs/ios/setup#available-pods
+  
   target 'tracyTests' do
     inherit! :search_paths
     # Pods for testing
