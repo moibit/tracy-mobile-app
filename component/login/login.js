@@ -7,6 +7,7 @@ import { CreateDB, GetDBData } from '../common/db';
 import SplashScreen from './splashScreen';
 import { AsyncStorage } from 'react-native';
 import firebase from 'react-native-firebase';
+import {CheckForAppUpdate} from '../promptUpgrade';
 // const Moi_ID = require('../../moi-id');
 // const moi_id = new Moi_ID();
 import RemotePushController from '../services/pushNotification';
@@ -23,47 +24,6 @@ class Login extends Component {
             processingWithoutFail : true
         }
     }
-    
-      
-        //1
-      async checkPermission() {
-        const enabled = await firebase.messaging().hasPermission();
-        if (enabled) {
-            this.getToken();
-        } else {
-            console.log('requesting permission');
-            this.requestPermission();
-        }
-      }
-      
-        //3
-      async getToken() {
-        let fcmToken = await AsyncStorage.getItem('fcmToken');
-        if (!fcmToken) {
-            fcmToken = await firebase.messaging().getToken();
-            if (fcmToken) {
-                // user has a device token
-                console.log(fcmToken);
-                await AsyncStorage.setItem('fcmToken', fcmToken);
-            }else{
-                console.log("Unable to get token");
-            }
-        }
-      }
-      
-        //2
-      async requestPermission() {
-        try {
-            await firebase.messaging().requestPermission();
-            // User has authorised
-            this.getToken();
-        } catch (error) {
-            //   User has rejected permissions
-            console.log('permission rejected');
-        }
-      }
-
-
 
       async createNotificationListeners() {
         /*
@@ -114,7 +74,7 @@ class Login extends Component {
        //  this.notificationOpenedListener();
       }
     async componentDidMount() {
-        this.checkPermission();
+        // this.checkPermission();
       
         this.createNotificationListeners(); //add this line
 
@@ -156,7 +116,7 @@ class Login extends Component {
             this.setState({ err: true });
         }
         else {
-            this.props.navigation.navigate("LoginOtp", { mobile: this.state.mobile , otpToBeVerifiedWith : await sendTracyOTP(this.state.mobile)});
+            this.props.navigation.navigate('LoginOtp', { mobile: this.state.mobile , otpToBeVerifiedWith : await sendTracyOTP(this.state.mobile)});
         }
     }
 
@@ -164,6 +124,7 @@ class Login extends Component {
     render() {
         return (
            <View>
+          <CheckForAppUpdate/>
             {this.state.checkingForSession ? 
             <SplashScreen processingWithoutFail={this.state.processingWithoutFail} /> : 
             <ScrollView style={{ backgroundColor: "#193F78",height:'100%' }}>
