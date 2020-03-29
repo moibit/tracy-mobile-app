@@ -62,9 +62,9 @@ export class CheckForAppUpdate extends Component {
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-
+                        { // TODO :  Design this modal as you like i
+                        }     
                         <Text>{' Mandatory Upgrade needed'}</Text>
-
                         </View>
                     </View>
                 </Modal>

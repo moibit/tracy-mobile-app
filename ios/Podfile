@@ -49,6 +49,8 @@ target 'tracy' do
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
 
+  pod 'react-native-version-number', :path => '../node_modules/react-native-version-number'
+
   target 'tracyTests' do
     inherit! :search_paths
     # Pods for testing
