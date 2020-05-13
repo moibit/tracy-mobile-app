@@ -42,12 +42,14 @@ target 'tracy' do
 
   # pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
-  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+  # pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
 
   pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 
 
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
   target 'tracyTests' do
     inherit! :search_paths

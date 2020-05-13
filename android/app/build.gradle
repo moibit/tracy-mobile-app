@@ -190,6 +190,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-svg')
 compile(project(':react-native-firebase')) {   
        transitive = false
    }
